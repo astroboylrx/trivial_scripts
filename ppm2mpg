@@ -1,0 +1,7 @@
+#!/bin/bash
+#ffmpeg -start_number 100 -f image2 -r 24 -pattern_type glob -i "*.jpg" -vcodec mjpeg -qscale 8 -s 640x480 -b 1M output.mov
+convert *.ppm temp.%05d.jpg 
+ffmpeg -f image2 -r 24 -pattern_type glob -i "*.jpg" -vcodec mjpeg -qscale 8 output.mov
+ffmpeg -y -i output.mov -qscale 8 output.mpg
+rm -f output.mov *.jpg
+#end

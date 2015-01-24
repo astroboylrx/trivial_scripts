@@ -1,0 +1,4 @@
+#!/bin/bash
+for ex in `ls -d id*/`
+        do rm $ex/*.vtk $ex/*.lis
+done

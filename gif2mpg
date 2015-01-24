@@ -1,0 +1,39 @@
+#!/bin/bash
+
+giftomov()
+{
+    #ffmpeg -start_number 100 -f image2 -r 24 -pattern_type glob -i "*.jpg" -vcodec mjpeg -qscale 8 -s 640x480 -b 1M output.mov                                                                    
+    echo "enter subfunction"
+    echo $1
+    for giffile in `ls -d $1`
+    do
+	echo "Now deal with " $giffile
+	echo "Extract jpgs from gif " $giffile
+	convert -coalesce $giffile temp%05d.jpg
+	echo "Then make mov from jpgs"
+	ffmpeg -f image2 -r 24 -pattern_type glob -i "temp*.jpg" -vcodec mjpeg -qscale 8 temp.mov
+	echo "convert mov to mpg (smaller in size)"
+	ffmpeg -y -i temp.mov -qscale 8 "$giffile".mpg
+	rm -f *.jpg temp.mov
+	echo "delete jpgs and mov, done!"
+    done
+    return 0
+}
+
+
+if [ $# -eq  0 ]
+then
+    echo "No input file. Auto search all gif files."
+    XX="*.gif"
+    giftomov "$XX"
+else
+    echo "Get input"
+    while [ $# -ne 0 ]
+    do
+	echo "para in main function" $1
+	giftomov $1
+	shift
+    done
+fi
+echo "All jobs done!"
+exit 0

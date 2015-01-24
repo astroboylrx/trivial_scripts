@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ "$(uname)" == "Darwin" ]; then
+    echo "selfupdate"
+	sudo port selfupdate
+	echo "upgrade outdated"
+	sudo port upgrade outdated
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	echo "update and upgrade"
+	sudo apt-get update
+	sudo apt-get -y upgrade
+	sudo apt-get -y autoremove
+fi

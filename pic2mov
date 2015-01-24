@@ -1,0 +1,5 @@
+#!/bin/sh
+default_postfix="jpg"
+postfix=${1:-$default_postfix}
+ffmpeg -framerate 50 -pattern_type glob -i "*.${postfix}" -c:v libx264 output.mov
+#end

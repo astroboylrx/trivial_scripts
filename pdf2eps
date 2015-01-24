@@ -1,0 +1,28 @@
+#!/bin/sh
+
+pdftoeps()
+{
+	for pdffile in `ls -d $1`
+	do
+	pdfcrop $pdffile "$pdffile-temp.pdf"
+	pdf2ps "$pdffile-temp.pdf" "$pdffile.eps"
+	rm "$pdffile-temp.pdf"
+	echo "Convert " $pdffile " done"
+	done
+}
+
+if [ $# -eq 0 ]
+then
+	echo "No input file. Auto search all pdf file."
+	XX="*.pdf"
+	pdftoeps "$XX"
+else
+	echo "Get input"
+	while [ $# -ne 0 ]
+	do
+	pdftoeps $1
+	shift
+	done
+fi
+echo "All jobs done!"
+exit 0
