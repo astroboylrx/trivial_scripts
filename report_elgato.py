@@ -59,13 +59,13 @@ if __name__ == '__main__':
     else:
         send_to_myself("Job-Monitor launching "+current_datetime_string(), bjobs)
         original_jobs = split_jobs(bjobs)
-        time.sleep(3)
+        time.sleep(300)
         bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
         while bjobs != "No unfinished job found\n":
             now_jobs = split_jobs(bjobs)
             n_jobs_done = len(original_jobs) - len(now_jobs)
             if n_jobs_done == 0:
-                time.sleep(3)
+                time.sleep(300)
             else:
                 email_body = "Job(s) done:\n"
                 for count in range(n_jobs_done):
@@ -73,7 +73,6 @@ if __name__ == '__main__':
                     del original_jobs[0]
                 send_to_myself("Job-Monitor update "+current_datetime_string(), email_body)
             bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
-            print 'new loop'
         email_body = "Job(s) done:\n"
         for count in range(len(original_jobs)):
             email_body += ' '.join([original_jobs[0]['JOBID'], original_jobs[0]['JOB_NAME']])+"\n"
