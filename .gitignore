@@ -7,5 +7,6 @@ uahpc
 join_lis
 join_vtk
 sort_lis
+*.pyc
 
 #end
