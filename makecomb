@@ -5,8 +5,6 @@ if [ $# -ne 3 ]
 	exit
 fi
 
-echo "mkdir comb"
-mkdir comb
 echo "mine_joinvtk"
 mine_joinvtk -i Par_Strat3d -o comb/Cout -f $2:$3 -p $1 -s vtk
 echo "join_lis"

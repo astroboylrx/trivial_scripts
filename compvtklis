@@ -1,5 +1,5 @@
 #!/bin/bash
 cd ~/bin
-gcc -Wall -W -o join_vtk sourcecode/join_vtk.c -lm
-gcc -Wall -W -o join_lis sourcecode/join_lis.c -lm
-gcc -Wall -W -o sort_lis sourcecode/sort_lis.c -lm
+gcc -Wall -O3 -W -o join_vtk sourcecode/join_vtk.c -lm
+gcc -Wall -O3 -W -o join_lis sourcecode/join_lis.c -lm
+gcc -Wall -O3 -W -o sort_lis sourcecode/sort_lis.c -lm
