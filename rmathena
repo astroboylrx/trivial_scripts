@@ -1,0 +1,45 @@
+#!/bin/bash
+if [[ -n `ls *hst` ]]
+then
+	rm *hst
+fi
+
+if [[ -n `ls *rst` ]]
+then
+	rm *rst
+fi
+
+if [[ -n `ls *txt` ]]
+then
+	rm *.txt
+fi
+
+if [[ -n `ls *vtk` ]]
+then
+	rm *.vtk
+fi
+
+if [[ -n `ls *lis` ]]
+then
+	rm *.lis
+fi
+
+if [[ -n `ls *err` ]]
+then
+	rm *err
+fi
+
+if [[ -n `ls *out` ]]
+then
+	rm *out
+fi
+
+if [[ -n `ls id*` ]]
+then
+	rm -rf id*
+fi
+
+if [[ -n `ls comb` ]]
+then
+	rm -rf comb
+fi

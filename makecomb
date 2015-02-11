@@ -1,0 +1,15 @@
+#/bin/bash
+if [ $# -ne 3 ]
+  then
+    echo "We need three arugments"
+	exit
+fi
+
+echo "mkdir comb"
+mkdir comb
+echo "mine_joinvtk"
+mine_joinvtk -i Par_Strat3d -o comb/Cout -f $2:$3 -p $1 -s vtk
+echo "join_lis"
+join_lis -p $1 -o Cout -i "Par_Strat3d" -s "all" -d ./comb -f $2:$3
+echo "done"
+
