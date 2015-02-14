@@ -34,12 +34,12 @@ then
 	rm *out
 fi
 
-if [[ -n `ls id*` ]]
+if [ -d id0 ]
 then
 	rm -rf id*
 fi
 
-if [[ -n `ls comb` ]]
+if [ -d comb ]
 then
 	rm -rf comb
 fi
