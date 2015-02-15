@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+  then
+    echo "Need one argument"
+	exit
+fi
+
+let "loopend=$1-1"
+for i in `seq 0 $loopend`;
+do
+  rm id$i/*.vtk id$i/*.lis &
+done
+wait
