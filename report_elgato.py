@@ -122,6 +122,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="This is an script to submit and monitor multiple jobs.")
     parser.add_argument('-p', '--path', dest="path", help="Path of a file which contains lsf.sh files (default: /home/u5/rixin/runs/kkruns/jobs2run.txt)", default="/home/u5/rixin/runs/kkruns/jobs2run.txt")
     parser.add_argument('-n', '--njobs', dest="njobs", help="Maximum number of running jobs (default: 3)", type=int, default=3)
+    parser.add_argument('-e', '--email', dest="email", help="If set, then job monitor will send email to report status", action='store_const', const=True, default=False)
+    parser.add_argument('-c', '--comment', dest="comment", help="Subject post-comment for emails", default="default")
     args = parser.parse_args()
 
     bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
@@ -133,9 +135,11 @@ if __name__ == '__main__':
     # main loop
     bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
     if bjobs == "No unfinished job found\n":
-        send_to_myself(bjobs, bjobs)
+        if args.email:
+            send_to_myself(bjobs+args.comment+current_datetime_string(), bjobs)
     else:
-        send_to_myself("Job-Monitor launching "+current_datetime_string(), bjobs)
+        if args.email:
+            send_to_myself("Job-Monitor launching "+args.comment+current_datetime_string(), bjobs)
         original_jobs = split_jobs(bjobs)
         time.sleep(30)
         bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
@@ -145,17 +149,19 @@ if __name__ == '__main__':
             if email_body == "NULL":
                 time.sleep(30)
             else:
-                if len(now_jobs) < args.njobs and jobs_left != 0:
+                if len(now_jobs) < args.njobs:
                     jobs_left = check_unsubmitted_jobs(args.path, args.njobs-len(now_jobs))
                     print "jobs_left = ", jobs_left
-                send_to_myself("Job-Monitor update "+current_datetime_string(), email_body)
+                if args.email:
+                    send_to_myself("Job-Monitor update "+args.comment+current_datetime_string(), email_body)
             bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
             
         email_body = "Job(s) done (or killed):\n"
         for count in range(len(original_jobs)):
             email_body += ' '.join([original_jobs[0]['JOBID'], original_jobs[0]['JOB_NAME']])+"\n"
             del original_jobs[0]
-        send_to_myself("Job-Monitor done "+current_datetime_string(), email_body)
+        if args.email:
+            send_to_myself("Job-Monitor done "+args.comment+current_datetime_string(), email_body)
         
         
     
