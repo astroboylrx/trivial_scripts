@@ -1,13 +1,44 @@
 #!/bin/bash
-if [ $# -ne 1 ]
+
+rmsomevtklis()
+{
+	for j in `seq -f "%04g" 0 $2`;
+	do
+		if [ $1 -eq 0 ]
+		  then
+			rm id$1/Par_Strat3d.$j.all.lis id$1/Par_Strat3d.$j.vtk
+		fi
+		if [ $1 -ne 0 ]
+		  then
+			rm id$1/Par_Strat3d-id$1.$j.all.lis id$1/Par_Strat3d-id$1.$j.vtk
+		fi
+	done
+	return 0
+}
+
+
+if [ $# -eq 0 ]
   then
-    echo "Need one argument"
+    echo "Need at least one argument"
 	exit
 fi
 
-let "loopend=$1-1"
-for i in `seq 0 $loopend`;
-do
-  rm id$i/*.vtk id$i/*.lis &
-done
-wait
+if [ $# -eq 1 ]
+  then
+	let "loopend=$1-1"
+	for i in `seq 0 $loopend`;
+	do
+		rm id$i/*.vtk id$i/*.lis &
+	done
+	wait
+fi
+
+if [ $# -eq 2 ]
+  then
+	let "loopend=$1-1"
+	for i in `seq 0 $loopend`;
+	do
+		rmsomevtklis $i $2 &
+	done
+	wait
+fi
