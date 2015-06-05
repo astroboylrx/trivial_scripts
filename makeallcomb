@@ -1,22 +1,24 @@
 #!/bin/bash
-if [ $# -ne 4 ]
-  then
-    echo "We need four arugments"
+if [ $# -ne 5 ]
+then
+    echo "We need five arugments"
+	echo "usage: makeallcomb Ncpus_in_Simulation File_start File_end Now_Parallel_Cpus Nlevels"
 	exit
 fi
+
 let "loopend=$4-1"
 for i in `seq 1 $loopend`;
 do
-  let "start=(($3-$2)/$4)*($i-1)+$2"
-  let "end=(($3-$2)/$4)*$i+$2"
-  if [ $end -gt $3 ]
+	let "start=(($3-$2)/$4)*($i-1)+$2"
+	let "end=(($3-$2)/$4)*$i+$2"
+	if [ $end -gt $3 ]
     then
-	  $end=$3
-  fi
-  echo "makecomb $1 $start $end"
-  makecomb $1 $start $end &
+		$end=$3
+	fi
+	echo "makecomb $1 $start $end"
+	makecomb $1 $start $end $5 &
 done
 let "start=$end+1"
 echo "makecomb $1 $start $3"
-makecomb $1 $start $3 &
+makecomb $1 $start $3 $5 &
 wait

@@ -1,12 +1,16 @@
-#/bin/bash
-if [ $# -ne 3 ]
-  then
-    echo "We need three arugments"
+#!/bin/bash
+if [ $# -ne 4 ]
+then
+    echo "We need four arugments"
+	echo "usage: makecomb Ncpus_in_Simulation File_start File_end Nlevels"
 	exit
 fi
 
 echo "mine_joinvtk"
-mine_joinvtk -i Par_Strat3d -o comb/Cout -f $2:$3 -p $1 -s vtk
+for i in `seq 0 $4`;
+do
+	mine_joinvtk -i Par_Strat3d -o comb/Cout -f $2:$3 -p $1 -s vtk -l $i
+done
 echo "join_lis"
 join_lis -p $1 -o Cout -i "Par_Strat3d" -s "all" -d ./comb -f $2:$3
 echo "done"
