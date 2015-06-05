@@ -48,3 +48,8 @@ if [ -d comb ]
 then
 	rm -rf comb
 fi
+
+if [ -d lev1 ]
+then
+	rm -rf lev*
+fi
