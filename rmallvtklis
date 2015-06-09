@@ -5,12 +5,28 @@ rmsomevtklis()
 	for j in `seq -f "%04g" 0 $2`;
 	do
 		if [ $1 -eq 0 ]
-		  then
+		then
 			rm id$1/Par_Strat3d.$j.all.lis id$1/Par_Strat3d.$j.vtk
 		fi
 		if [ $1 -ne 0 ]
-		  then
+		then
 			rm id$1/Par_Strat3d-id$1.$j.all.lis id$1/Par_Strat3d-id$1.$j.vtk
+		fi
+	done
+	return 0
+}
+
+rmLEVELsomevtklis()
+{
+	for j in `seq -f "%04g" 0 $2`;
+	do
+		if [ $1 -eq 0 ]
+		then
+			rm id$1/lev$3/Par_Strat3d-lev$3.$j.all.lis id$1/lev$3/Par_Strat3d-lev$3..$j.vtk
+		fi
+		if [ $1 -ne 0 ]
+		then
+			rm id$1/lev$3/Par_Strat3d-id$1-lev$3.$j.all.lis id$1/lev$3/Par_Strat3d-id$1-lev$3.$j.vtk
 		fi
 	done
 	return 0
@@ -18,13 +34,13 @@ rmsomevtklis()
 
 
 if [ $# -eq 0 ]
-  then
+then
     echo "Need at least one argument"
 	exit
 fi
 
 if [ $# -eq 1 ]
-  then
+then
 	let "loopend=$1-1"
 	for i in `seq 0 $loopend`;
 	do
@@ -34,11 +50,22 @@ if [ $# -eq 1 ]
 fi
 
 if [ $# -eq 2 ]
-  then
+then
 	let "loopend=$1-1"
 	for i in `seq 0 $loopend`;
 	do
 		rmsomevtklis $i $2 &
+	done
+	wait
+fi
+
+if [ $# -eq 3 ]
+then
+	let "loopend=$1-1"
+	for i in `seq 0 $loopend`;
+	do
+		rmsomevtklis $i $2 &
+		rmLEVELsomevtklis $i $2 $3
 	done
 	wait
 fi
