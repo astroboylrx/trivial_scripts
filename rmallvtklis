@@ -65,7 +65,10 @@ then
 	for i in `seq 0 $loopend`;
 	do
 		rmsomevtklis $i $2 &
-		rmLEVELsomevtklis $i $2 $3
+		for j in `seq 1 $3`;
+		do
+			rmLEVELsomevtklis $i $2 $j &
+		done
 	done
 	wait
 fi

@@ -19,6 +19,16 @@ then
 	rm *.vtk
 fi
 
+if [[ -n `ls *dat` ]]
+then
+	rm *.dat
+fi
+
+if [[ -n `ls *ppm` ]]
+then
+	rm *.ppm
+fi
+
 if [[ -n `ls *lis` ]]
 then
 	rm *.lis
