@@ -22,7 +22,7 @@ rmLEVELsomevtklis()
 	do
 		if [ $1 -eq 0 ]
 		then
-			rm id$1/lev$3/Par_Strat3d-lev$3..$j.vtk #id$1/lev$3/Par_Strat3d-lev$3.$j.all.lis
+			rm id$1/lev$3/Par_Strat3d-lev$3.$j.vtk #id$1/lev$3/Par_Strat3d-lev$3.$j.all.lis
 		fi
 		if [ $1 -ne 0 ]
 		then
