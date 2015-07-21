@@ -44,6 +44,11 @@ then
 	rm *out
 fi
 
+if [[ -n `ls *1d` ]]
+then
+	rm *1d
+fi
+
 if [[ -n `ls core` ]]
 then
 	rm core
