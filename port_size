@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+function port_size {
+    size=0
+    pkg_size=0
+	crap="none_will_use_such_a_crappy_filename.txt"
+    for pkg in $(port $@ | tail -n +2 | awk '{ print $1 }')
+    do
+		port contents $pkg \
+			| gsed -r 's/^[[:space:]]*(.*)[[:space:]]*$/\1/g;s/ /\\ /g' \
+			| tail -n +2 | xargs du | cut -f1 > $crap # du calculates the 4K blocks they occupied
+		pkg_size=$(paste -s -d '+' $crap | bc)
+		rm -f $crap
+        size=$(( $size + $pkg_size / 1024 ))
+        printf "%10d %s\n" $pkg_size $pkg
+    done
+    printf "%10d %s\n" $size "Total Size (MB)"
+	# There is another way to do it but calculating the precise package size, instead of how much disk space they occupied
+	#port contents --size --units B package_name | awk '{total += $1}; END{ printf("%0.2f KB\n", total/1024) }'
+	# Reference: http://stackoverflow.com/questions/16007574/how-to-get-the-size-of-the-installed-package-via-macport
+}
+port_size $*
