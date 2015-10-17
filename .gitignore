@@ -8,5 +8,10 @@ join_lis
 join_vtk
 sort_lis
 *.pyc
+wget
+pigz
+zsh
+unpigz
+rsync_from_desktop
 
 #end

@@ -4,8 +4,8 @@
 
 import subprocess, sys, os, smtplib, shlex, time, datetime
 import numpy as np
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 def current_datetime_string():
     return datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
@@ -34,12 +34,12 @@ def send_to_myself(Subject, body):
 class Job:
     def __init__(self, job_info):
         self.jobid, self.user, self.status, self.queue, self.from_host = job_info[:5]
-        self.submit_time = ' '.join(job_info[-3:])
+        self.submit_time = ' '.join(str(segm) for segm in job_info[-3:])
         self.name = job_info[-4]
         if len(job_info) == 10:
             star_pos = job_info[5].find('*')
             if star_pos == -1:
-                print("Wrong job info.")
+                print("Wrong job info. No cpu count.")
                 exit
             else:
                 self.n_cpu = int(job_info[5][:star_pos])
@@ -98,7 +98,7 @@ class JobList:
         temp_job_list = []
         self.n_cpu = 0
         self.n_job = 0
-        bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT)
+        bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT).decode('utf-8')
         if bjobs != "No unfinished job found\n":
             jobs = bjobs.split('\n')
             self.header = jobs[0].split()
@@ -161,8 +161,8 @@ class Unsubmitted_JobList:
         with open(filepath) as unsubmitted_jobs_file:
             unsubmitted_jobs_path = unsubmitted_jobs_file.read().splitlines()
         jobs_path = [x for x in unsubmitted_jobs_path if len(x) != 0]
-        submitted_jobs_path = [x for x in unsubmitted_jobs_path if x[0] == '#']
-        unsubmitted_jobs_path = [x for x in unsubmitted_jobs_path if len(x) != 0 and x[0] != '#']
+        submitted_jobs_path = [x for x in jobs_path if x[0] == '#']
+        unsubmitted_jobs_path = [x for x in jobs_path if x[0] != '#']
         
         if n_cpu <= 0:
             return len(unsubmitted_jobs_path)        
@@ -232,7 +232,7 @@ if __name__ == '__main__':
             jobs_left = UJL.check_given_file(args.path, args.ncpus-JL.n_cpu)
             time.sleep(30)
             bjobs = JL.check_bjobs()
-            print "JL.n_cpu = ", JL.n_cpu
+            print("JL.n_cpu = ", JL.n_cpu)
             if bjobs[0] != 'N':
                 print("jobs_left = ", jobs_left)
                 if args.email:

@@ -1,0 +1,10 @@
+#/bin/bash
+if [ $# -ne 2 ]
+  then
+    echo "Need job path and submission file"
+    exit
+fi
+
+cd $1
+bsub < $2
+echo "done"
