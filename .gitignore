@@ -9,5 +9,8 @@ zsh
 unpigz
 htop
 rsync_from_desktop
+emacs
+emacsclient
+.DS_Store
 
 #end
