@@ -1,6 +1,14 @@
 #!/bin/bash
 if [ "$(uname)" == "Darwin" ]; then
-	/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -c -n $* &
+	# Since using [-a ''] as an argument of emacsclient in Mac OS X fails to start emacs server itself, so I need to start the server by shell
+	## 1, check if there is any Emacs server temp file in /var/folders/..., Notice that we use Emacs instead of emacs in Mac OS
+	socket_file=$(lsof -c Emacs | grep server | tr -s " " | cut -d' ' -f8)
+	if [[ $socket_file == "" ]]; then
+		/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs --daemon > /dev/null 2>&1
+	fi
+	## 2, now open emacsclient, or just open a new instance if server is still not running.
+	/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -a '/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs' -c -n $* &
+
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-	emacsclient -c -n "$@" &
+	emacsclient -a '' -c -n "$@" &
 fi
