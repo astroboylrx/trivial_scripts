@@ -18,14 +18,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # check vtk file loss
-    vtks = subprocess.check_output(shlex.split("ll *.vtk")).decode('utf-8')
+    vtks = subprocess.getoutput("bash -c 'ls -ahlF *.vtk'")
     vtks = vtks.split('\n')
     vtks = [item for item in vtks if len(item) != 0]
     j = 0
     for i in range(args.vtk):
         if j < len(vtks):
             if int(vtks[j].split()[-1].split('.')[1]) == i:
-                if vtks[j].split()[3] != args.size:
+                if vtks[j].split()[4] != args.size:
                     print("Damaged file: ", vtks[j].split()[-1])
                 j += 1                    
             else:
@@ -34,14 +34,14 @@ if __name__ == '__main__':
             print("No vtk: ", i)
 
     # check lis file loss
-    liss = subprocess.check_output(shlex.split("ll *.lis")).decode('utf-8')
+    liss = subprocess.getoutput("bash -c 'ls -ahlF *.lis'")
     liss = liss.split('\n')
     liss = [item for item in liss if len(item) != 0]
     j = 0
     for i in range(args.lis):
         if j < len(liss):
             if int(liss[j].split()[-1].split('.')[1]) == i:
-                if liss[j].split()[3] != args.cap:
+                if liss[j].split()[4] != args.cap:
                     print("Damaged file: ", liss[j].split()[-1])
                 j += 1                    
             else:
