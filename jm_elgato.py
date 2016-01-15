@@ -28,7 +28,7 @@ def send_to_myself(Subject, body):
     text = msg.as_string()
     server.sendmail(FROM, TO, text)
     server.quit()
-    print("Message Sent.")
+    #print("Message Sent.")
     return
 
 class Job:
@@ -112,6 +112,9 @@ class JobList:
                         self.n_job += 1
                         if temp_job_list[-1].status == "RUN":
                             self.n_cpu += temp_job_list[-1].n_cpu
+                        elif temp_job_list[-1].status == "PEND":
+                            self.n_cpu = 32768
+                            return "NULL"
                     else:
                         star_pos = jobs[count].split()[0].find('*')
                         if star_pos == -1:
@@ -121,7 +124,7 @@ class JobList:
                         temp_job_list[-1].n_cpu += temp_number
                         self.n_cpu += temp_number
                 count += 1
-            print("n_cpu = ", self.n_cpu)
+            #print("n_cpu = ", self.n_cpu)
             return self.update_joblist(temp_job_list)
         else: # i.e. if bjobs == "No unfinished job found\n"
             return "None"
@@ -153,7 +156,7 @@ class Unsubmitted_JobList:
         dir_path = lsf_path[:slash_pos]
         lsf_name = lsf_path[slash_pos+1:]
         cmd = "/bin/bash /home/u5/rixin/bin/pysub_jobs "+dir_path+" "+lsf_name
-        print("From submit_job(): "+cmd)
+        #print("From submit_job(): "+cmd)
         bsub = subprocess.call(shlex.split(cmd), stderr=subprocess.STDOUT)
         return
     
@@ -216,7 +219,7 @@ if __name__ == '__main__':
     if UJL.unsufficient_cpu_flag == 1:
         print("Need more processors!")
         sys.exit(1)
-    print("jobs_left = ", jobs_left)
+    #print("jobs_left = ", jobs_left)
     time.sleep(30)
 
     # main loop
@@ -232,9 +235,9 @@ if __name__ == '__main__':
             jobs_left = UJL.check_given_file(args.path, args.ncpus-JL.n_cpu)
             time.sleep(30)
             bjobs = JL.check_bjobs()
-            print("JL.n_cpu = ", JL.n_cpu)
+            #print("JL.n_cpu = ", JL.n_cpu)
             if bjobs[0] != 'N':
-                print("jobs_left = ", jobs_left)
+                #print("jobs_left = ", jobs_left)
                 if args.email:
                     send_to_myself("Job-Monitor update "+args.comment+current_datetime_string(), bjobs)
         else:
