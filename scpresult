@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+	echo "We need one argument"
+	exit
+fi
+cd ~/runs/brruns/BCstudy/
+for ex in `ls -d */`; do echo $ex; for ni in `ls -d $ex/*/`; do echo $ni; scp $ni/bin/readresult/result_${1}.txt mydesk:"~/Documents/Google\ Drive/ProgramOS/athena-analyses/data/$ni/bin/"; done; done
