@@ -12,5 +12,5 @@ rsync_from_desktop
 emacs
 emacsclient
 .DS_Store
-
+anim
 #end
