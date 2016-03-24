@@ -1,0 +1,59 @@
+# Adapted from yt's activate script
+
+# This file must be used with "source bin/activateHomeBrew"
+# you cannot run it directly
+
+##################################################
+############### For clean start ##################
+##################################################
+
+deactivateHomeBrew () {
+    # reset old environment variables
+    if [ -n "$_OLD_VIRTUAL_PATH" ] ; then
+        PATH="$_OLD_VIRTUAL_PATH"
+        export PATH
+        unset _OLD_VIRTUAL_PATH
+    fi
+
+    ### Begin HomeBrew vars
+	if [ -n "$PATH_needed_by_HomeBrew" ] ; then
+		unset PATH_needed_by_HomeBrew
+	fi
+    ### End HomeBrew vars
+
+    # This should detect bash and zsh, which have a hash command that must
+    # be called to get it to forget past commands.  Without forgetting
+    # past commands the $PATH changes we made may not be respected
+    if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+        hash -r
+    fi
+
+    if [ ! "$1" = "nondestructive" ] ; then
+    # Self destruct!
+        unset -f deactivateHomeBrew
+    fi
+}
+
+# unset irrelavent variables
+deactivateHomeBrew nondestructive
+
+##################################################
+############# For path needed by HomeBrew ################
+##################################################
+### Save original PATH
+_OLD_VIRTUAL_PATH="$PATH"
+### Constructed PATH needed by HomeBrew ###
+# there are many methods to do this, for example if we know MacPorts' PATH is in the begining, just cut twice
+#PATH_needed_by_HomeBrew=${PATH:31}:${PATH:0:30}
+# here is a probably more safer way to do this, only delete MacPorts' PATH and append manually
+PATH_needed_by_HomeBrew=${PATH%%/opt/local/bin*}
+PATH_needed_by_HomeBrew=${PATH_needed_by_HomeBrew}${PATH##*/opt/local/sbin:}:/opt/local/bin:/opt/local/sbin # take the part after substr "*sbin:" and put to back
+### Define new PATH
+export PATH="$PATH_needed_by_HomeBrew"
+
+# This should detect bash and zsh, which have a hash command that must
+# be called to get it to forget past commands.  Without forgetting
+# past commands the $PATH changes we made may not be respected
+if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+    hash -r
+fi
