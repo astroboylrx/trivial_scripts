@@ -9,11 +9,12 @@ if [ "$(uname)" == "Darwin" ]; then
 	## 2, now open emacsclient, or just open a new instance if server is still not running.
 	/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -a '/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs' -c -n $* &
 	## 3, now try to activate the window of Emacs, use osascript to call AppleScript
-	if [[ $socket_file != "" ]]; then
-		osascript -e  "try
-                           tell application \"Emacs\" to activate
-                       end try"
-	fi 
+    ## ** I moved step 3 to emacs configuration file "~/.emacs" since this often triggers another emacs window
+#	if [[ $socket_file != "" ]]; then
+#		osascript -e  "try
+#                           tell application \"Emacs\" to activate
+#                       end try"
+#	fi 
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	emacsclient -a '' -c -n "$@" &
