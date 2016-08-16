@@ -7,7 +7,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	sudo port uninstall inactive
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	echo "update and upgrade"
-	sudo apt-get update
-	sudo apt-get -y upgrade
-	sudo apt-get -y autoremove
+	sudo apt update
+	sudo apt -y upgrade
+	sudo apt -y autoremove
 fi

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ "$(uname)" == "Darwin" ]; then
 	# Since using [-a ''] as an argument of emacsclient in Mac OS X fails to start emacs server itself, so I need to start the server by shell
 	## 1, check if there is any Emacs server temp file in /var/folders/..., Notice that we use Emacs instead of emacs in Mac OS
