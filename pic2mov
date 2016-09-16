@@ -3,7 +3,6 @@ default_postfix="jpg"
 default_framerate=30
 postfix=${1:-$default_postfix}
 frate=${2:-$default_framerate}
-ffmpeg -framerate $frate -pattern_type glob -i "*.${postfix}" -c:v libx264 output.mov
-ffmpeg -y -i output.mov -qscale 8 output.mpg
-rm -f output.mov
+
+ffmpeg -r $frate -pattern_type glob -i "*.${postfix}" -c:v libx264 -pix_fmt yuv420p output.mp4
 #end

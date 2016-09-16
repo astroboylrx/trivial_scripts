@@ -13,4 +13,6 @@ emacs
 emacsclient
 .DS_Store
 anim
+subl
+scpresult
 #end
