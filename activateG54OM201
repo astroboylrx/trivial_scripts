@@ -1,0 +1,115 @@
+# Adapted from yt's activate script
+
+# This file must be used with "source bin/activateG54OM201"
+# you cannot run it directly
+
+##################################################
+############### For clean start ##################
+##################################################
+
+deactivateG54OM201 () {
+    # reset old environment variables
+    if [ -n "$_OLD_VIRTUAL_PATH" ] ; then
+        PATH="$_OLD_VIRTUAL_PATH"
+        export PATH
+        unset _OLD_VIRTUAL_PATH
+    fi
+
+    ### Begin extra gcc54+openmpi201 vars
+    if [ -n "$GCC54_PATH" ] ; then
+        unset GCC54_PATH
+    fi
+    if [ -n "$OMPI201_PATH" ] ; then
+        unset OMPI201_PATH
+    fi
+    if [ -n "$_OLD_VIRTUAL_LD_LIBRARY_PATH" ] ; then
+        LD_LIBRARY_PATH="$_OLD_VIRTUAL_LD_LIBRARY_PATH"
+        export LD_LIBRARY_PATH
+        unset _OLD_VIRTUAL_LD_LIBRARY_PATH
+    fi
+    if [ -n "$_OLD_VIRTUAL_LD_RUN_PATH" ] ; then
+        LD_LIBRARY_PATH="$_OLD_VIRTUAL_LD_RUN_PATH"
+        export LD_RUN_PATH
+        unset _OLD_VIRTUAL_LD_RUN_PATH
+    fi
+    ### End extra gcc54+openmpi201 vars
+
+    # This should detect bash and zsh, which have a hash command that must
+    # be called to get it to forget past commands.  Without forgetting
+    # past commands the $PATH changes we made may not be respected
+    if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+        hash -r
+    fi
+
+    if [ ! "$1" = "nondestructive" ] ; then
+    # Self destruct!
+        unset -f deactivateG54OM201
+    fi
+}
+
+# unset irrelavent variables
+deactivateG54OM201 nondestructive
+
+#########################################################
+############# For gcc54+openmpi201 paths ################
+#########################################################
+### Define gcc and mpi dir path
+export GCC54_PATH="/home/u5/rixin/Public/Program_Files/gcc54"
+export OMPI201_PATH="/home/u5/rixin/Public/Program_Files/openmpi201_g54"
+### Add into PATH
+_OLD_VIRTUAL_PATH="$PATH"
+export PATH="$GCC54_PATH/bin:$OMPI201_PATH/bin:$PATH"
+
+### ----------------------------------------------------------------------
+### Libraries have been installed in:
+###    /home/u5/rixin/Public/Program_Files/gcc54/lib/../lib64
+###    /home/u5/rixin/Public/Program_Files/gcc54/lib/gcc/x86_64-unknown-linux-gnu/5.4.0
+###    /home/u5/rixin/Public/Program_Files/gcc54/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin
+###    /home/u5/rixin/Public/Program_Files/gcc54/lib/../lib64/gcj-5.4.0-16
+### 
+### If you ever happen to want to link against installed libraries
+### in a given directory, LIBDIR, you must either use libtool, and
+### specify the full pathname of the library, or use the `-LLIBDIR'
+### flag during linking and do at least one of the following:
+###    - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+###      during execution
+###    - add LIBDIR to the `LD_RUN_PATH' environment variable
+###      during linking
+###    - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+###    - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+### 
+### See any operating system documentation about shared libraries for
+### more information, such as the ld(1) and ld.so(8) manual pages.
+### ----------------------------------------------------------------------
+
+### ----------------------------------------------------------------------
+### Libraries have been installed in:
+###    /home/u5/rixin/Public/Program_Files/openmpi201_g54/lib
+###    /home/u5/rixin/Public/Program_Files/openmpi201_g54/lib/openmpi
+### 
+### If you ever happen to want to link against installed libraries
+### in a given directory, LIBDIR, you must either use libtool, and
+### specify the full pathname of the library, or use the `-LLIBDIR'
+### flag during linking and do at least one of the following:
+###    - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+###      during execution
+###    - add LIBDIR to the `LD_RUN_PATH' environment variable
+###      during linking
+###    - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+###    - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+### 
+### See any operating system documentation about shared libraries for
+### more information, such as the ld(1) and ld.so(8) manual pages.
+### ----------------------------------------------------------------------
+
+_OLD_VIRTUAL_LIBRARY_PATH="$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$GCC54_PATH/lib64:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin:$GCC54_PATH/lib64/gcj-5.4.0-16:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_LIBRARY_PATH"
+_OLD_VIRTUAL_RUN_PATH="$LD_RUN_PATH"
+export LD_RUN_PATH="$GCC54_PATH/lib64:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin:$GCC54_PATH/lib64/gcj-5.4.0-16:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_RUN_PATH"
+
+# This should detect bash and zsh, which have a hash command that must
+# be called to get it to forget past commands.  Without forgetting
+# past commands the $PATH changes we made may not be respected
+if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+    hash -r
+fi
