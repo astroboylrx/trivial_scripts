@@ -22,13 +22,43 @@ deactivateG49OM201 () {
     if [ -n "$OMPI201_PATH" ] ; then
         unset OMPI201_PATH
     fi
+
+    if [ -n "$CPATH_IS_EMPTY" ] ; then
+        unset CPATH
+        unset _OLD_VIRTUAL_CPATH
+        unset CPATH_IS_EMPTY
+    fi
+    if [ -n "$_OLD_VIRTUAL_CPATH" ] ; then
+        CPATH="$_OLD_VIRTUAL_CPATH"
+        export CPATH
+        unset _OLD_VIRTUAL_CPATH
+    fi
+
+    if [ -n "$LIBRARY_PATH_IS_EMPTY" ] ; then
+        unset LIBRARY_PATH
+        unset _OLD_VIRTUAL_LIBRARY_PATH
+        unset LIBRARY_PATH_IS_EMPTY
+    fi
+    if [ -n "$_OLD_VIRTUAL_LIBRARY_PATH" ] ; then
+        LIBRARY_PATH="$_OLD_VIRTUAL_LIBRARY_PATH"
+        export LIBRARY_PATH
+        unset _OLD_VIRTUAL_LIBRARY_PATH
+    fi
+    
+    # LD_LIBRARY_PATH is usually not empty due to lsf system
     if [ -n "$_OLD_VIRTUAL_LD_LIBRARY_PATH" ] ; then
         LD_LIBRARY_PATH="$_OLD_VIRTUAL_LD_LIBRARY_PATH"
         export LD_LIBRARY_PATH
         unset _OLD_VIRTUAL_LD_LIBRARY_PATH
     fi
+
+    if [ -n "$LD_RUN_PATH_IS_EMPTY" ] ; then
+        unset LD_RUN_PATH
+        unset _OLD_VIRTUAL_LD_RUN_PATH
+        unset LD_RUN_PATH_IS_EMPTY
+    fi
     if [ -n "$_OLD_VIRTUAL_LD_RUN_PATH" ] ; then
-        LD_LIBRARY_PATH="$_OLD_VIRTUAL_LD_RUN_PATH"
+        LD_RUN_PATH="$_OLD_VIRTUAL_LD_RUN_PATH"
         export LD_RUN_PATH
         unset _OLD_VIRTUAL_LD_RUN_PATH
     fi
@@ -63,6 +93,7 @@ export PATH="$GCC49_PATH/bin:$OMPI201_PATH/bin:$PATH"
 ### ----------------------------------------------------------------------
 ### Libraries have been installed in:
 ###    /home/u5/rixin/Public/Program_Files/gcc49/lib/../lib64
+###    /home/u5/rixin/Public/Program_Files/gcc49/lib/gcc/x86_64-unknown-linux-gnu/4.9.4
 ###    /home/u5/rixin/Public/Program_Files/gcc49/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4
 ###    /home/u5/rixin/Public/Program_Files/gcc49/lib/../lib64/gcj-4.9.4-15
 ### 
@@ -101,10 +132,29 @@ export PATH="$GCC49_PATH/bin:$OMPI201_PATH/bin:$PATH"
 ### more information, such as the ld(1) and ld.so(8) manual pages.
 ### ----------------------------------------------------------------------
 
-_OLD_VIRTUAL_LIBRARY_PATH="$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$GCC49_PATH/lib64:$GCC49_PATH/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/lib64/gcj-4.9.4-15:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_LIBRARY_PATH"
-_OLD_VIRTUAL_RUN_PATH="$LD_RUN_PATH"
-export LD_RUN_PATH="$GCC49_PATH/lib64:$GCC49_PATH/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/lib64/gcj-4.9.4-15:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_RUN_PATH"
+export ALL_LIBRARIES_OF_GCCOMPI=$GCC49_PATH/lib64:$GCC49_PATH/lib/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/lib64/gcj-4.9.4-15:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_CPATH="$CPATH"
+if [ -z "$CPATH" ] ; then
+    export CPATH_IS_EMPTY=TRUE
+fi
+export CPATH="$GCC49_PATH/include:$OMPI201_PATH/include:$CPATH"
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_LIBRARY_PATH="$LIBRARY_PATH"
+if [ -z "$LIBRARY_PATH" ] ; then
+    export LIBRARY_PATH_IS_EMPTY=TRUE
+fi
+export LIBRARY_PATH="$GCC49_PATH/lib64:$GCC49_PATH/lib/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/lib64/gcj-4.9.4-15:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LIBRARY_PATH"
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$GCC49_PATH/lib64:$GCC49_PATH/lib/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/lib64/gcj-4.9.4-15:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_LIBRARY_PATH"
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_LD_RUN_PATH="$LD_RUN_PATH"
+if [ -z "$LD_RUN_PATH" ] ; then
+    LD_RUN_PATH_IS_EMPTY=TRUE
+fi
+export LD_RUN_PATH="$GCC49_PATH/lib64:$GCC49_PATH/lib/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/libexec/gcc/x86_64-unknown-linux-gnu/4.9.4:$GCC49_PATH/lib64/gcj-4.9.4-15:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_RUN_PATH"
+### -----------------------------------###---------------------------------- ###
 
 # This should detect bash and zsh, which have a hash command that must
 # be called to get it to forget past commands.  Without forgetting

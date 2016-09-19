@@ -22,10 +22,40 @@ deactivateG54OM201 () {
     if [ -n "$OMPI201_PATH" ] ; then
         unset OMPI201_PATH
     fi
+
+    if [ -n "$CPATH_IS_EMPTY" ] ; then
+        unset CPATH
+        unset _OLD_VIRTUAL_CPATH
+        unset CPATH_IS_EMPTY
+    fi
+    if [ -n "$_OLD_VIRTUAL_CPATH" ] ; then
+        CPATH="$_OLD_VIRTUAL_CPATH"
+        export CPATH
+        unset _OLD_VIRTUAL_CPATH
+    fi
+
+    if [ -n "$LIBRARY_PATH_IS_EMPTY" ] ; then
+        unset LIBRARY_PATH
+        unset _OLD_VIRTUAL_LIBRARY_PATH
+        unset LIBRARY_PATH_IS_EMPTY
+    fi
+    if [ -n "$_OLD_VIRTUAL_LIBRARY_PATH" ] ; then
+        LIBRARY_PATH="$_OLD_VIRTUAL_LIBRARY_PATH"
+        export LIBRARY_PATH
+        unset _OLD_VIRTUAL_LIBRARY_PATH
+    fi
+    
+    # LD_LIBRARY_PATH is usually not empty due to lsf system
     if [ -n "$_OLD_VIRTUAL_LD_LIBRARY_PATH" ] ; then
         LD_LIBRARY_PATH="$_OLD_VIRTUAL_LD_LIBRARY_PATH"
         export LD_LIBRARY_PATH
         unset _OLD_VIRTUAL_LD_LIBRARY_PATH
+    fi
+
+    if [ -n "$LD_RUN_PATH_IS_EMPTY" ] ; then
+        unset LD_RUN_PATH
+        unset _OLD_VIRTUAL_LD_RUN_PATH
+        unset LD_RUN_PATH_IS_EMPTY
     fi
     if [ -n "$_OLD_VIRTUAL_LD_RUN_PATH" ] ; then
         LD_LIBRARY_PATH="$_OLD_VIRTUAL_LD_RUN_PATH"
@@ -65,6 +95,8 @@ export PATH="$GCC54_PATH/bin:$OMPI201_PATH/bin:$PATH"
 ###    /home/u5/rixin/Public/Program_Files/gcc54/lib/../lib64
 ###    /home/u5/rixin/Public/Program_Files/gcc54/lib/gcc/x86_64-unknown-linux-gnu/5.4.0
 ###    /home/u5/rixin/Public/Program_Files/gcc54/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin
+###    /home/u5/rixin/Public/Program_Files/gcc54/libexec/gcc/x86_64-unknown-linux-gnu/5.4.0
+###    /home/u5/rixin/Public/Program_Files/gcc54/libexec/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin
 ###    /home/u5/rixin/Public/Program_Files/gcc54/lib/../lib64/gcj-5.4.0-16
 ### 
 ### If you ever happen to want to link against installed libraries
@@ -102,10 +134,29 @@ export PATH="$GCC54_PATH/bin:$OMPI201_PATH/bin:$PATH"
 ### more information, such as the ld(1) and ld.so(8) manual pages.
 ### ----------------------------------------------------------------------
 
-_OLD_VIRTUAL_LIBRARY_PATH="$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$GCC54_PATH/lib64:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin:$GCC54_PATH/lib64/gcj-5.4.0-16:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_LIBRARY_PATH"
-_OLD_VIRTUAL_RUN_PATH="$LD_RUN_PATH"
-export LD_RUN_PATH="$GCC54_PATH/lib64:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin:$GCC54_PATH/lib64/gcj-5.4.0-16:$OMPI201_PATH/lib:$OMPI201_PATH/lib/openmpi:$LD_RUN_PATH"
+ALL_LIBRARIES_OF_GCCOPMI=$GCC54_PATH/lib/../lib64:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0:$GCC54_PATH/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin:$GCC54_PATH/libexec/gcc/x86_64-unknown-linux-gnu/5.4.0:$GCC54_PATH/libexec/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin:$GCC54_PATH/lib/../lib64/gcj-5.4.0-16
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_CPATH="$CPATH"
+if [ -z "$CPATH" ] ; then
+    export CPATH_IS_EMPTY=TRUE
+fi
+export CPATH="$GCC54_PATH/include:$OMPI201_PATH/include:$CPATH"
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_LIBRARY_PATH="$LIBRARY_PATH"
+if [ -z "$LIBRARY_PATH" ] ; then
+    export LIBRARY_PATH_IS_EMPTY=TRUE
+fi
+export LIBRARY_PATH=$ALL_LIBRARIES_OF_GCCOPMI:$LIBRARY_PATH
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH=$ALL_LIBRARIES_OF_GCCOPMI:$LD_LIBRARY_PATH
+### -----------------------------------###---------------------------------- ###
+_OLD_VIRTUAL_LD_RUN_PATH="$LD_RUN_PATH"
+if [ -z "$LD_RUN_PATH" ] ; then
+    LD_RUN_PATH_IS_EMPTY=TRUE
+fi
+export LD_RUN_PATH=$ALL_LIBRARIES_OF_GCCOPMI:$LD_RUN_PATH
+### -----------------------------------###---------------------------------- ###
 
 # This should detect bash and zsh, which have a hash command that must
 # be called to get it to forget past commands.  Without forgetting
