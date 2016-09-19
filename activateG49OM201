@@ -55,7 +55,7 @@ deactivateG49OM201 nondestructive
 #########################################################
 ### Define gcc and mpi dir path
 export GCC49_PATH="/home/u5/rixin/Public/Program_Files/gcc49"
-export OMPI110_PATH="/home/u5/rixin/Public/Program_Files/openmpi201_g49"
+export OMPI201_PATH="/home/u5/rixin/Public/Program_Files/openmpi201_g49"
 ### Add into PATH
 _OLD_VIRTUAL_PATH="$PATH"
 export PATH="$GCC49_PATH/bin:$OMPI201_PATH/bin:$PATH"
