@@ -15,8 +15,6 @@
     back to normal utf-8 bytes.
 """
 
-import sys
-
 
 def decipher_meta_char(immu_bytes):
     """Decipher the leading byte"""
@@ -26,6 +24,8 @@ def decipher_meta_char(immu_bytes):
 
 
 if __name__ == "__main__":
+    import sys # import will fail when there is io.py in current working directory
+
     # obtain stdin and look for the characteristic byte --> 0x83
     content = sys.stdin.buffer.read().split(bytes([0x83]))
     if len(content) > 1:

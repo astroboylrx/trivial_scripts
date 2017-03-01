@@ -4,5 +4,5 @@ default_framerate=30
 postfix=${1:-$default_postfix}
 frate=${2:-$default_framerate}
 
-ffmpeg -r $frate -pattern_type glob -i "*.${postfix}" -c:v libx264 -pix_fmt yuv420p output.mp4
+ffmpeg -r $frate -pattern_type glob -i "*.${postfix}" -c:v libx264 -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -pix_fmt yuv420p output.mp4
 #end
