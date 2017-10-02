@@ -43,13 +43,11 @@ deactivateHomeBrew nondestructive
 ### Save original PATH
 _OLD_VIRTUAL_PATH="$PATH"
 ### Constructed PATH needed by HomeBrew ###
-# there are many methods to do this, for example if we know MacPorts' PATH is in the begining, just cut twice
-#PATH_needed_by_HomeBrew=${PATH:31}:${PATH:0:30}
-# here is a probably more safer way to do this, only delete MacPorts' PATH and append manually
-PATH_needed_by_HomeBrew=${PATH%%/opt/local/bin*}
-PATH_needed_by_HomeBrew=${PATH_needed_by_HomeBrew}${PATH##*/opt/local/sbin:}:/opt/local/bin:/opt/local/sbin # take the part after substr "*sbin:" and put to back
+# Assuming we have /opt/local/bin:/opt/local/sbin at the beginning and $HomeBrew/bin in the end
+PATH_needed_by_HomeBrew=${PATH##/*:} # Delete the longest match of "/*:", which leaves the last path
+PATH_without_both=${${PATH%:*}#/*sbin:} # First cut the end starting with the last ':', then cut the shortest match of "/*sbin" from the beginning
 ### Define new PATH
-export PATH="$PATH_needed_by_HomeBrew"
+export PATH=${PATH_needed_by_HomeBrew}:${PATH_without_both}:/opt/local/bin:/opt/local/sbin
 
 # This should detect bash and zsh, which have a hash command that must
 # be called to get it to forget past commands.  Without forgetting
