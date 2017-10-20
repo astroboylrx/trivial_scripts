@@ -33,6 +33,27 @@ deactivateG54OM201 () {
         export CPATH
         unset _OLD_VIRTUAL_CPATH
     fi
+    if [ -n "$_OLD_CC_VARIABLE" ] ; then
+       CC="$_OLD_CC_VARIABLE"
+       export CC
+       unset _OLD_CC_VARIABLE
+    fi
+    if [ -n "$CC_IS_EMPTY" ] ; then
+       unset CC
+       unset _OLD_CC_VARIABLE
+       unset CC_IS_EMPTY
+    fi
+    if [ -n "$_OLD_CXX_VARIABLE" ] ; then
+       CXX="$_OLD_CXX_VARIABLE"
+       export CXX
+       unset _OLD_CXX_VARIABLE
+    fi
+    if [ -n "$CXX_IS_EMPTY" ] ; then
+       unset CXX
+       unset _OLD_CXX_VARIABLE
+       unset CXX_IS_EMPTY
+    fi
+
 
     if [ -n "$LIBRARY_PATH_IS_EMPTY" ] ; then
         unset LIBRARY_PATH
@@ -141,6 +162,17 @@ if [ -z "$CPATH" ] ; then
     export CPATH_IS_EMPTY=TRUE
 fi
 export CPATH="$GCC54_PATH/include:$OMPI201_PATH/include:$CPATH"
+### -----------------------------------###---------------------------------- ###
+_OLD_CC_VARIABLE="$CC"
+if [ -z "$CC" ] ; then
+   CC_IS_EMPTY=TRUE
+fi
+export CC="$GCC54_PATH/bin/gcc"
+_OLD_CXX_VARIABLE="$CXX"
+if [ -z "$CXX" ] ; then
+   CXX_IS_EMPTY=TRUE
+fi
+export CXX="$GCC54_PATH/bin/g++"
 ### -----------------------------------###---------------------------------- ###
 _OLD_VIRTUAL_LIBRARY_PATH="$LIBRARY_PATH"
 if [ -z "$LIBRARY_PATH" ] ; then
