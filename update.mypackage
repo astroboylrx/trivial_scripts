@@ -7,6 +7,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	sudo port upgrade outdated
 	sudo port uninstall inactive
 	sudo port clean --all installed
+	echo "done with MacPorts; update HomeBrew"
+	brew update; brew upgrade; brew cleanup
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	echo "update and upgrade"
 	sudo apt-get update
