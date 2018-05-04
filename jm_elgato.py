@@ -39,8 +39,7 @@ class Job:
         if len(job_info) == 10:
             star_pos = job_info[5].find('*')
             if star_pos == -1:
-                print("Wrong job info. No cpu count.")
-                exit
+                self.n_cpu = 1
             else:
                 self.n_cpu = int(job_info[5][:star_pos])
         else:
@@ -50,11 +49,11 @@ class Job:
         return "Job "+self.jobid+ " ("+self.name+") "
 
     def print_status(self):
-        print(brief(self)+"is " + self.status + "ING.")
+        print(self.brief()+"is " + self.status + "ING.")
         return
 
     def print_n_cpu(self):
-        print(brief(self)+"runs on "+self.n_cpu+" processors.")
+        print(self.brief()+"runs on "+self.n_cpu+" processors.")
 
 class JobList:
     def __init__(self):
@@ -118,9 +117,9 @@ class JobList:
                     else:
                         star_pos = jobs[count].split()[0].find('*')
                         if star_pos == -1:
-                            print("Wrong bjobs output.")
-                            exit
-                        temp_number = int(jobs[count].split()[0][:star_pos])
+                            temp_number = 1
+                        else:
+                            temp_number = int(jobs[count].split()[0][:star_pos])
                         temp_job_list[-1].n_cpu += temp_number
                         self.n_cpu += temp_number
                 count += 1
