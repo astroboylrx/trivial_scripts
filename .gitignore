@@ -16,6 +16,15 @@ anim
 subl
 scpresult
 autoconf
-# other files
+git*
+cmake
+ffmpeg
+nasm
+yasm
+source-highlight
+tohevc
+x264
+x265
+clion
 chuo
 #end
