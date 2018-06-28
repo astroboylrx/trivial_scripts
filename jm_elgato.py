@@ -66,17 +66,28 @@ class JobList:
     def update_joblist(self, temp_job_list):
         original_jobs_exist = np.zeros(len(self.job_list))
         now_jobs_new = np.zeros(len(temp_job_list))
+        pending_jobs_run = np.zeros(len(self.job_list))
         for count, item in enumerate(temp_job_list):
             new_job = 1
             for count2, item2 in enumerate(self.job_list):
                 if item.jobid == item2.jobid:
                     original_jobs_exist[count2] = 1
+                    if item.status == "RUN" and item2.status == "PEND":
+                        pending_jobs_run[count2] = 1
+                        item2.status = item.status
+                        item2.n_cpu = item.n_cpu
                     new_job = 0
                     break;
             if new_job == 1:
                 now_jobs_new[count] = 1
-        c = np.where(original_jobs_exist == 0)[0]
+        
         email_body = ""
+        c = np.where(pending_jobs_run == 1)[0]
+        if len(c) != 0:
+            email_body += "Job(s) running (from pending):\n"
+            for count, item in enumerate(c):
+                email_body += self.job_list[item].brief()+'\n'
+        c = np.where(original_jobs_exist == 0)[0]                
         if len(c) != 0:
             email_body += "Job(s) done (or killed):\n"
             for count, item in enumerate(c):
@@ -87,7 +98,7 @@ class JobList:
             email_body += "Job(s) added:\n"
             for count2, item2 in enumerate(c):
                 self.job_list.append(temp_job_list[item2])
-                email_body += temp_job_list[item2].brief()+'\n'
+                email_body += temp_job_list[item2].brief()+" with status: "+temp_job_list[item2].status+'\n'
         if email_body == "":
             return "NULL"
         else:
@@ -98,6 +109,8 @@ class JobList:
         self.n_cpu = 0
         self.n_job = 0
         bjobs = subprocess.check_output("bjobs", stderr=subprocess.STDOUT).decode('utf-8')
+        #f = open("/Users/rixin/bjobs.txt")
+        #bjobs = f.read()
         if bjobs != "No unfinished job found\n":
             jobs = bjobs.split('\n')
             self.header = jobs[0].split()
@@ -113,7 +126,7 @@ class JobList:
                             self.n_cpu += temp_job_list[-1].n_cpu
                         elif temp_job_list[-1].status == "PEND":
                             self.n_cpu = 32768
-                            return "NULL"
+                            #return "NULL" # RL: why?
                     else:
                         star_pos = jobs[count].split()[0].find('*')
                         if star_pos == -1:
