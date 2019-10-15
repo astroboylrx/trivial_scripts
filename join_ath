@@ -1,0 +1,59 @@
+#!/bin/bash
+
+if [ $# -lt 5 ]
+then
+    echo "We need at least five arugments"
+	echo "usage: join_ath Ncpus_in_Simulation outdir postname File_start:File_end[:Interval] Now_Parallel_Cpus [Nlevels]"
+    #                     $1                  $2     $3       $4                             $5                 $6
+	exit
+fi
+
+# Let's figure out the file-processing interval for each child-process
+colon_count=${4//[^:]}; colon_count=${#colon_count}
+if [ $colon_count -eq 2 ]; then
+    interval=${4##*:}
+    start=${4%%:*}
+    end=${4#*:}
+    end=${end%:*}
+else
+    interval=1
+    start=${4%:*}
+    end=${4#*:}
+fi
+let "parallel_int=$5*$interval"
+
+# Let's figure out the file type and decide the postname
+file_type="${3##*.}"
+if [ $file_type = "vtk" ]; then
+    if [ $# -eq 6 ]; then
+        level=$6
+    else
+        level=0
+    fi
+    join_prog="mine_joinvtk -l $level"
+    postname=$3
+elif [ $file_type = "lis" ]; then
+    [ -d $2 ] || mkdir $2 && echo "$2 does not exist; creating now"
+    join_prog="join_lis -d ."
+    postname=${3%.lis}
+else
+    echo "This script only joinines VTK/LIS files. Unknown file type: $file_type"
+fi
+
+# Let's figure out Job name
+phst_file=`ls *.phst`; job_name=${phst_file%%.phst}
+
+# Let's create child-process one by one
+for i in `seq 1 $5`; do
+    let "parallel_start=$start+($i-1)*$interval"
+    echo "$join_prog -p $1 -i $job_name -o $2/$job_name -s $postname -f $parallel_start:$end:$parallel_int"
+    $join_prog -p $1 -i $job_name -o $2/$job_name -s $postname -f $parallel_start:$end:$parallel_int &
+done
+
+wait
+
+# cheat sheet
+#  ${MYVAR#pattern}     # delete shortest match of pattern from the beginning
+#  ${MYVAR##pattern}    # delete longest match of pattern from the beginning
+#  ${MYVAR%pattern}     # delete shortest match of pattern from the end
+#  ${MYVAR%%pattern}    # delete longest match of pattern from the end
