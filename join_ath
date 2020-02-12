@@ -3,9 +3,27 @@
 if [ $# -lt 5 ]
 then
     echo "We need at least five arugments"
-	echo "usage: join_ath Ncpus_in_Simulation outdir postname File_start:File_end[:Interval] Now_Parallel_Cpus [Nlevels]"
-    #                     $1                  $2     $3       $4                             $5                 $6
+	echo "usage: join_ath Ncpus_in_Simulation outdir postname File_start:File_end[:Interval] Now_Parallel_Cpus [Extra customization]"
+    #                     $1                  $2     $3       $4                             $5                 $6...
 	exit
+fi
+
+# Let's figure out Job name
+num_file=$(ls ./*.phst 2> /dev/null | wc -l)
+if [ $num_file -eq 1 ]; then
+    phst_file=`ls *.phst`; job_name=${phst_file%%.phst}
+else
+    num_file=$(ls ./athinput.* 2> /dev/null | wc -l)
+    if [ $num_file -eq 1 ]; then
+        in_file=`ls athinput.*`;
+        job_name=`grep problem_id $in_file`
+        job_name=${job_name##*=}  # remove text before = sign
+        job_name=${job_name%%#*}  # remove comment
+        job_name=${job_name//[[:blank:]]/}  # remove spaces and tab
+    else
+        echo "Cannot find a proper file to extract the problem id (failed finding a unique *.phst and athinput.*"
+        exit
+    fi
 fi
 
 # Let's figure out the file-processing interval for each child-process
@@ -32,22 +50,27 @@ if [ $file_type = "vtk" ]; then
     fi
     join_prog="mine_joinvtk -l $level"
     postname=$3
+    prot_tail=""
 elif [ $file_type = "lis" ]; then
-    [ -d $2 ] || mkdir $2 && echo "$2 does not exist; creating now"
     join_prog="join_lis -d ."
     postname=${3%.lis}
+    prot_tail=""
+elif [ $file_type = "ppm" ]; then
+    join_prog="joinppm.sh"
+    postname=$3
+    prog_tail="${@:6}"
 else
     echo "This script only joinines VTK/LIS files. Unknown file type: $file_type"
 fi
 
-# Let's figure out Job name
-phst_file=`ls *.phst`; job_name=${phst_file%%.phst}
+# make sure the folder exist
+[ -d $2 ] || (mkdir $2 && echo "$2 does not exist; creating now")
 
 # Let's create child-process one by one
 for i in `seq 1 $5`; do
     let "parallel_start=$start+($i-1)*$interval"
-    echo "$join_prog -p $1 -i $job_name -o $2/$job_name -s $postname -f $parallel_start:$end:$parallel_int"
-    $join_prog -p $1 -i $job_name -o $2/$job_name -s $postname -f $parallel_start:$end:$parallel_int &
+    echo "$join_prog -p $1 -i $job_name -o $2/$job_name -s $postname -f $parallel_start:$end:$parallel_int $prog_tail"
+    $join_prog -p $1 -i $job_name -o $2/$job_name -s $postname -f $parallel_start:$end:$parallel_int $prog_tail &
 done
 
 wait
