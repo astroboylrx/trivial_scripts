@@ -1,6 +1,7 @@
 # some executable file
 join_lis
 join_vtk
+join_vtk_d2f
 sort_lis
 *.pyc
 wget

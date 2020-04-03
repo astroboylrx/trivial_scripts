@@ -52,7 +52,11 @@ if [ $file_type = "vtk" ]; then
     postname=$3
     prot_tail=""
 elif [ $file_type = "lis" ]; then
-    join_prog="join_lis -d ."
+    if [ $# -eq 6 ]; then
+        join_prog="join_lis -d $6"
+    else
+        join_prog="join_lis -d ."
+    fi
     postname=${3%.lis}
     prot_tail=""
 elif [ $file_type = "ppm" ]; then
