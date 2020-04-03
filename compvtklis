@@ -1,5 +1,6 @@
 #!/bin/bash
 cd ~/bin
 g++ -Wall -O3 -W -o join_vtk sourcecode/join_vtk.c -lm
+g++ -Wall -O3 -W -o join_vtk_d2f sourcecode/join_vtk_from_double_to_float.c -lm
 gcc -Wall -O3 -W -o join_lis sourcecode/join_lis.c -lm
 gcc -Wall -O3 -W -o sort_lis sourcecode/sort_lis.c -lm
