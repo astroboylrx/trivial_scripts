@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+
+if [ $# -lt 1 ]
+then
+    echo "Sync local papers to Google Drive"
+    rclone sync /Users/rixin/Documents/Sync4Papers/ GoogleDrive:/Sync4Papers/ -L -P
+    echo "Done"
+else
+    if [ $1 = "out" ] || [ $1 = "toG" ]
+    then
+        echo "Sync local papers to Google Drive"
+        rclone sync /Users/rixin/Documents/Sync4Papers/ GoogleDrive:/Sync4Papers/ -L -P
+        echo "Done"
+    fi
+
+    if [ $1 = "in" ] || [ $1 = "fromG" ] || [ $1 = "back" ]
+    then
+        echo "Sync remote papers from Google Drive"
+        rclone sync GoogleDrive:/Sync4Papers/ /Users/rixin/Documents/Sync4Papers/ -L -P
+        echo "Done"
+    fi
+fi
